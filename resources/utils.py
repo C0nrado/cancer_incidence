@@ -20,12 +20,12 @@ def summary_dataset(df):
         out.append(string)
         return len(out), out
 
-    fill_line = lambda x: x + '-'*35 + '\n'
-    
+    fill_line = lambda x, width: x + '-'*width + '\n'
+    default_width = 35
     out = ''
-    out = fill_line(out)
+    out = fill_line(out, default_width)
     out += 'Data Set Summary'.center(35) + '\n'
-    out = fill_line(out)
+    out = fill_line(out, default_width)
 
     if isinstance(df.index, pd.PeriodIndex) or isinstance(df.index, pd.DatetimeIndex):
         out = add_line(out, ('Starts at', str(df.index.min())))
@@ -42,9 +42,9 @@ def summary_dataset(df):
     out = add_line(out, ('NULL ', str(df.isnull().sum().sum())))
     out = add_line(out, ('Memory[KB]', str(round(df.memory_usage().sum()/(2**10),1))))
     
-    out = fill_line(out)
+    out = fill_line(out, default_width)
     out += 'Data Types'.center(35) + '\n'
-    out = fill_line(out)
+    out = fill_line(out, default_width)
 
     for values in (tuple(d.split()) for d in df.dtypes.to_string().split('\n')):
         out = add_line(out, values)
@@ -55,9 +55,9 @@ def summary_dataset(df):
     line_width = len(col2_body.split('\n')[0])
     
     col2 = '' 
-    col2 = fill_line(col2)
+    col2 = fill_line(col2, line_width)
     col2 += 'Statistics'.center(line_width) + '\n'
-    col2 = fill_line(col2)
+    col2 = fill_line(col2, line_width)
     col2 += col2_body
     out = out.split('\n')
     col2 = col2.split('\n')
